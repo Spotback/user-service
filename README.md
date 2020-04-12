@@ -13,11 +13,12 @@ This is a **Node.js** & **Express** app made with **Typescript** and will handle
 To run/deploy this example you will need to install [Node.js](https://nodejs.org/en/)
 After you are done here are the necessary commands.
 
+## First
+
 ```sh
 $ npm install
 ```
-
-## OR
+## Second
 
 ```sh
 $ npm run start
