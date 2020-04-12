@@ -34,5 +34,5 @@ $ docker run -p 127.0.0.1:8080:3000 spotback/user-service:x.x.x
 
 $ docker push spotback/user-service:1.0.2
 ```
-After this you should have your Lambda service up and running.
-You can find a blog post about this example [here](http://lazarbulic.com/blog/?p=154&preview=true).
+After this you should have your image ready for use.
+You can find more about about this docker application [here](http://docker.com).
