@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 
 class Delete {
 
-    private delete(data: any, res: Response, flag: boolean): void {
+    private delete(data: any, res: Response): void {
         const email: string = data.email;
         UserDB.findOneAndDelete({ email }, (findErr: any, findResult: User | null) => {
             if (findErr) {
@@ -28,7 +28,7 @@ class Delete {
         const legit = JWT.verify(req.headers.bearer as string);
         if (legit) {
             const email: string = legit._doc.email;
-            this.delete({ email }, res, false);
+            this.delete({ email }, res);
         } else {
             WebUtil.errorResponse(res, Constants.CLIENT_ERROR_UA_T, Constants.CLIENT_ERROR_UA, 401);
         }

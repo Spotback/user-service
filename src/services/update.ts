@@ -2,7 +2,6 @@
 import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
 import JWT from '../utils/jwtUtil';
-import Auth from '../utils/auth'
 import UserDB, { User } from '../model/user';
 import { Request, Response } from 'express';
 
