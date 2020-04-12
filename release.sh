@@ -10,6 +10,7 @@ git pull
 docker run --rm -v "$PWD":/app treeder/bump patch
 version=`cat VERSION`
 echo "version: $version"
+json -I -f package.json -e "this.version='$version'"
 # run build
 ./build.sh
 # tag it
