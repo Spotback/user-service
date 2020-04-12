@@ -1,7 +1,7 @@
 
 export const VERIFIED_HTML_LOCATION = '/verified.html';
 export const WELCOME_HTML_LOCATION = './resources/welcome.html';
-export const WELCOME_SUBJECT = 'Thank you for joiningg the Spotback community!';
+export const WELCOME_SUBJECT = 'Thank you for joining the Spotback community!';
 export const ENV_LOCATION = '.';
 export const STATIC_RESOURCES = './resources';
 export const KEY_LOCATION = './resources/key.pem';
