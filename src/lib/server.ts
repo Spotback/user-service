@@ -1,13 +1,15 @@
 import app from './app';
 import * as https from 'https';
 import * as fs from 'fs';
-const PORT = 3000;
+import * as Constants from '../utils/constants';
 
 const httpsOptions = {
-    key: fs.readFileSync('./config/key.pem'),
-    cert: fs.readFileSync('./config/cert.pem')
+    key: fs.readFileSync(Constants.KEY_LOCATION),
+    cert: fs.readFileSync(Constants.CERT_LOCATION)
 }
 
+const PORT = process.env.PORT;
+
 https.createServer(httpsOptions, app).listen(PORT, () => {
-    console.log('Express server listening on port ' + PORT);
+    console.log(Constants.START_UP_MESSAGE + PORT);
 });

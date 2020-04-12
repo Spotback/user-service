@@ -1,5 +1,6 @@
 import jwt, { SignOptions, VerifyOptions, Algorithm } from 'jsonwebtoken';
 import fs from 'fs';
+import * as Constants from '../utils/constants';
 
 class JWTUtil {
     
@@ -10,14 +11,14 @@ class JWTUtil {
     private readonly a: string;
     constructor() {
         this.algorithm = process.env.ALGORITHM as string;
-        this.publicKey = fs.readFileSync('./config/key.pem');
-        this.privateKey = fs.readFileSync('./config/key.pem');
-        this.i  = 'spotbackapp.com';          // Issuer 
-        this.a  = 'https://www.spotbackapp.com'; // Audience
+        this.publicKey = fs.readFileSync(Constants.CERT_LOCATION);
+        this.privateKey = fs.readFileSync(Constants.KEY_LOCATION);
+        this.i  = Constants.ISSUER;          // Issuer 
+        this.a  = Constants.AUDIENCE; // Audience
     }
 
     public verify(token: string): any {
-        console.debug("ATTEMPTING TO VERIFY");
+        console.debug(Constants.JWT_VERIFY_LOG);
         if(!token) {
             return token;
         }
@@ -25,14 +26,14 @@ class JWTUtil {
         const verifyOptions: VerifyOptions = {
             issuer:  this.i,
             audience:  this.a,
-            algorithms:  ['RS256' as Algorithm]
+            algorithms:  [this.algorithm as Algorithm]
         };
         const legit = jwt.verify(token, this.publicKey, verifyOptions);
         if(!legit) {
-            console.debug('VERIFICATION FAILED');
+            console.debug(Constants.JWT_FAILURE_LOG);
             return legit;
         } else {
-            console.debug('VERIFICATION SUCCEEDED');
+            console.debug(Constants.JWT_SUCCESS_LOG);
             return legit;
         }
     }
@@ -41,8 +42,8 @@ class JWTUtil {
         const signOptions: SignOptions = {
             issuer:  this.i,
             audience:  this.a,
-            expiresIn:  "730h",
-            algorithm:  'RS256' as Algorithm
+            expiresIn:  process.env.JWT_EXPIRATION,
+            algorithm:  this.algorithm as Algorithm
         };
         const token: string = jwt.sign(payload, this.privateKey, signOptions);
         return token;

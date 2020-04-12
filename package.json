@@ -1,12 +1,12 @@
 {
   "name": "user-service",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Spotback backend user service",
   "main": "build/lib/server.js",
   "scripts": {
-    "build": "rimraf ./build && tsc --build tsconfig.json && cp -a ./src/resources/. ./build/resources",
+    "build": "rimraf ./build && tsc --build tsconfig.json",
     "start:dev": "nodemon",
-    "start": "npm run build && node build/lib/server.js",
+    "start": "npm run build && node -r dotenv/config build/lib/server.js",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix"
   },

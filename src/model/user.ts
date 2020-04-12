@@ -1,6 +1,33 @@
 import * as mongoose from 'mongoose';
+import * as Constants from '../utils/constants';
 
 const Schema = mongoose.Schema;
+
+/**
+ * Converts an object to a dotified object.
+ *
+ * @param obj         Object
+ * @returns           Dotified Object
+ */
+export const dotify = (obj: any) => {
+
+    const res: any = {};
+  
+    function recurse(obj: any, current?: string) {
+      for (const key in obj) {
+        const value = obj[key];
+        const newKey = (current ? current + '.' + key : key);
+        if (value && typeof value === 'object') {
+          recurse(value, newKey);
+        } else {
+          res[newKey] = value;
+        }
+      }
+    }
+  
+    recurse(obj);
+    return res;
+  }
 
 export class CarObject {
     public carType!: string;
@@ -10,9 +37,24 @@ export class CarObject {
     public year!: string;
 }
 
-export class Car implements mongoose.SchemaTypeOpts<CarObject> {
-    public type!: CarObject;
-}
+const carSchema = new Schema({
+    make: {
+        type: String,
+        required: true
+    },
+    model: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    carType: {
+        type: String,
+        required: true
+    }
+})
 
 export interface User extends mongoose.Document {
     balance: number;
@@ -87,7 +129,7 @@ export const UserSchema = new Schema({
         default: false
     },
     car: {
-        type: Object,
+        type: carSchema,
         default: null
     },
     created_time: {
@@ -96,5 +138,5 @@ export const UserSchema = new Schema({
     }
 });
 
-const UserDB = mongoose.model<User>("Users", UserSchema);
+const UserDB = mongoose.model<User>(Constants.USERS_TABLE, UserSchema);
 export default UserDB;

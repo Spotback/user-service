@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import { User } from '../model/user';
+import * as Constants from '../utils/constants';
 
 class WebUtil {
 
@@ -16,11 +17,12 @@ class WebUtil {
     }
 
     public htmlResponse(res: Response, file: string, status: number): void {
-        res.status(status).sendFile(file)
+        res.status(status).sendFile(file, { root: Constants.STATIC_RESOURCES })
     }
 
     public stripPII(data: any): User {
-        const user = Object.assign({password: undefined}, data._doc);
+        const user = Object.assign({}, data._doc);
+        delete user.password;
         return user;
     }
 }

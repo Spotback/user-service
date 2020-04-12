@@ -3,20 +3,18 @@ import SUBSTITUTOR from './substitutor';
 import Mail from 'nodemailer/lib/mailer';
 
 class EmailUtil {
-  private from = 'spotbackteam@gmail.com';
+  
   private transporter: Mail;
 
   constructor() {
-    process.env.GMAIL_USERNAME = 'spotbackteam@gmail.com';
-    process.env.GMAIL_PASSWORD = 'Sp0ticusp@rk19';
     const username = process.env.GMAIL_USERNAME;
     const password = process.env.GMAIL_PASSWORD;
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        type: 'login',
-        user: username,
-        pass: password
+        type: 'LOGIN',
+        user: username as any,
+        pass: password as any
       }
     });
   }

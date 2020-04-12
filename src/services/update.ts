@@ -4,11 +4,12 @@ import WebUtil from '../utils/webUtil'
 import JWT from '../utils/jwtUtil';
 import UserDB, { User } from '../model/user';
 import { Request, Response } from 'express';
+import { dotify } from '../model/user';
 
 class Update {
 
     private validateVerify(req: Request): boolean {
-        if (req.params.email) return true;
+        if (req.query.email) return true;
         else return false;
     }
 
@@ -28,12 +29,12 @@ class Update {
      * @param flag respond with updated data
      */
     private update(data: User, email: string, res: Response, flag: boolean): void {
-        UserDB.findOneAndUpdate({ email }, data, (updateErr: any, doc: User | null, updateRes: any) => {
+        UserDB.findOneAndUpdate({ email }, dotify(data), (updateErr: any, doc: User | null, updateRes: any) => {
             if (updateErr) {
                 WebUtil.errorResponse(res, updateErr, Constants.SERVER_ERROR, 500);
             } else if (doc) {
                 if (flag) {
-                    WebUtil.htmlResponse(res, Constants.VERIFIED_HTML, 200);
+                    WebUtil.htmlResponse(res, Constants.VERIFIED_HTML_LOCATION, 200);
                 } else {
                     const token: string = JWT.sign(Object.assign({}, doc))
                     WebUtil.successResponse(res, WebUtil.stripPII(doc), 200, { bearer: token });

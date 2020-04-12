@@ -66,7 +66,7 @@ class Read {
 
     public account = (req: Request, res: Response): void => {
         try {
-            console.log(Constants.LOGIN_REQ_LOG);
+            console.log(Constants.READ_REQ_LOG);
             const spotbackCorrelationId: string | string[] | undefined = req.headers["spotback-correlation-id"];
             if (!this.validateReq(req) || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
             this.compare(req, res);

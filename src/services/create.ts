@@ -7,6 +7,7 @@ import uuidv1 from 'uuid/v1';
 import Auth from '../utils/auth'
 import UserDB, { User } from '../model/user';
 import { Request, Response } from 'express';
+import * as fs from 'fs';
 
 class Create {
 
@@ -27,6 +28,7 @@ class Create {
             } else {
                 newUser.password = hash;
                 newUser.referralCode = uuidv1();
+                // eslint-disable-next-line @typescript-eslint/camelcase
                 newUser.created_time = Date.now();
                 if (referralCode) {
                     UserDB.findOneAndUpdate({ referralCode }, {
@@ -46,7 +48,7 @@ class Create {
                 }
                 UserDB.create(newUser).then((createResult: User): void => {
                     const responseBody = {
-                        message: 'Account created successfully!',
+                        message: Constants.ACCOUNT_CREATION_MESSAGE,
                         freeSpots: freeSpots
                     }
                     const token: string = JWT.sign(Object.assign({}, createResult));
@@ -74,14 +76,12 @@ class Create {
                     WebUtil.errorResponse(res, findErr, Constants.SERVER_ERROR, 500);
                     return;
                 } else if (findRes) {
-                    WebUtil.errorResponse(res, 'An account with that email already exists.',
+                    WebUtil.errorResponse(res, Constants.ACCOUNT_EXISTS_LOG,
                         Constants.CLIENT_ERROR_AE, 409);
                     return;
                 } else {
-                    /** TODO
-                     * need to set email data.
-                     */
-                    EMAIL.send('', '', body, (emailErr: any, emailResult: any): void => {
+                    const welcomHTML = fs.readFileSync(Constants.WELCOME_HTML_LOCATION, 'utf8');
+                    EMAIL.send(welcomHTML, Constants.WELCOME_SUBJECT, body, (emailErr: any, emailResult: any): void => {
                         if (emailErr) {
                             WebUtil.errorResponse(res, emailErr, Constants.SERVER_ERROR, 500);
                         } else {

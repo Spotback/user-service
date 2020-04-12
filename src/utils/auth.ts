@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcryptjs';
+import * as Constants from '../utils/constants';
 
 export default class Auth {
-    private static readonly saltRounds: number = 10;
+    private static readonly saltRounds = Number(process.env.SALT_RNDS);
 
     public static hashPassword(password: string, callback: (error: Error, hash: string) => void): void {
         bcrypt.hash(password, this.saltRounds, (error, hash) => {
@@ -16,7 +17,7 @@ export default class Auth {
                 callback(null, true);
             } else {
                 // passwords do not match
-                callback('Invalid password match', null);
+                callback(Constants.INVALID_PASS_MATCH, null);
             }
         });
     }

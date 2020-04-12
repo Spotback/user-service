@@ -16,7 +16,7 @@ class Delete {
             } else {
                 const message = {
                     code: Constants.SUCCESS,
-                    message: 'ACCOUNT DELETED'
+                    message: Constants.ACCOUNT_DELETED_MESSAGE
                 }
                 WebUtil.successResponse(res, message, 202);
 
