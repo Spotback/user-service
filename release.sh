@@ -14,7 +14,7 @@ json -I -f package.json -e "this.version='$version'"
 # run build
 ./build.sh
 # tag it
-git add -A
+git add .
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
 git push
