@@ -28,15 +28,15 @@ $ npm run start
 ```sh
 $ npm run start:dev
 
-$ docker build -t spotback/user-service:x.x.x .
+$ docker build -t spotback/user-service:x.x.x-TEST .
 
-$ docker run -p 127.0.0.1:8080:3000 spotback/user-service:x.x.x
+$ docker run -p 127.0.0.1:8080:3000 spotback/user-service:x.x.x-TEST
 ```
 
 ## After changes have been tested you can push a new image version
 
 ```sh
-$ docker push spotback/user-service:x.x.x
+$ ./release.sh
 ```
 
 After this you should have your image ready for use.
