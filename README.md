@@ -1,6 +1,6 @@
 # Spotback User-Service backend
 
-This is a **Node.js** & **Express** app made with **Typescript** and will handle CRUD functions.
+This is a **Node.js** & **Express** app made with **Typescript** and will handle CRUD functions. To run this app you will need to install **MongoDB** with the default settings and no authentication.
 
 * [create function](endpoints/create.md)
 * [read function](endpoints/read.md)
@@ -31,8 +31,13 @@ $ npm run start:dev
 $ docker build -t spotback/user-service:x.x.x .
 
 $ docker run -p 127.0.0.1:8080:3000 spotback/user-service:x.x.x
-
-$ docker push spotback/user-service:1.0.2
 ```
+
+## After changes have been tested you can push a new image version
+
+```sh
+$ docker push spotback/user-service:x.x.x
+```
+
 After this you should have your image ready for use.
 You can find more about about this docker application [here](http://docker.com).
