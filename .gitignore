@@ -5,5 +5,5 @@ jspm_packages
 # Serverless directories
 .serverless
 
-build
+build/.
 .DS_Store
