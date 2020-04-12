@@ -4,8 +4,8 @@ import * as fs from 'fs';
 const PORT = 3000;
 
 const httpsOptions = {
-    key: fs.readFileSync('./build/config/key.pem'),
-    cert: fs.readFileSync('./build/config/cert.pem')
+    key: fs.readFileSync('./config/key.pem'),
+    cert: fs.readFileSync('./config/cert.pem')
 }
 
 https.createServer(httpsOptions, app).listen(PORT, () => {

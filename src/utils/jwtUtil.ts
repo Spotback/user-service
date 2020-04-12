@@ -10,8 +10,8 @@ class JWTUtil {
     private readonly a: string;
     constructor() {
         this.algorithm = process.env.ALGORITHM as string;
-        this.publicKey = fs.readFileSync('./build/config/key.pem');
-        this.privateKey = fs.readFileSync('./build/config/key.pem');
+        this.publicKey = fs.readFileSync('./config/key.pem');
+        this.privateKey = fs.readFileSync('./config/key.pem');
         this.i  = 'spotbackapp.com';          // Issuer 
         this.a  = 'https://www.spotbackapp.com'; // Audience
     }

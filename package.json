@@ -4,7 +4,7 @@
   "description": "Spotback backend user service",
   "main": "build/lib/server.js",
   "scripts": {
-    "build": "rimraf ./build && tsc --build tsconfig.json && cp -a ./src/resources/. ./build/resources && cp -a ./src/config/. ./build/config",
+    "build": "rimraf ./build && tsc --build tsconfig.json && cp -a ./src/resources/. ./build/resources",
     "start:dev": "nodemon",
     "start": "npm run build && node build/lib/server.js",
     "lint": "eslint . --ext .ts",
