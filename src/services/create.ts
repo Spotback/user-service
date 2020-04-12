@@ -19,7 +19,7 @@ class Create {
 
     private create(newUser: User, res: Response, referralCode?: string): void {
         const password: string = newUser.password;
-        let freeSpots: number = 0;
+        let freeSpots = 0;
         Auth.hashPassword(password, (err: Error, hash: string) => {
             if (err) {
                 // throw and error

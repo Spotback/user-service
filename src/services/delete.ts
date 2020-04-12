@@ -38,8 +38,8 @@ class Delete {
     public account = (req: Request, res: Response): void => {
         try {
             console.log(Constants.DELETE_REQ_LOG);
-            const spotbackCorrelationId: string | string[] | undefined = req.headers["spotback-correlation-id"];
-            if (req.headers.bearer || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
+            const spotbackCorrelationId: string | string[] | undefined = req.headers['spotback-correlation-id'];
+            if (!req.headers.bearer || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
             this.validate(req, res);
         } catch (error) {
             WebUtil.errorResponse(res, error, Constants.CLIENT_ERROR_HB, 400);
