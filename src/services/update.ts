@@ -27,7 +27,7 @@ class Update {
      * @param res Response object
      * @param flag respond with updated data
      */
-    private update(data: any, email: string, res: Response, flag: boolean): void {
+    private update(data: User, email: string, res: Response, flag: boolean): void {
         UserDB.findOneAndUpdate({ email }, data, (updateErr: any, doc: User | null, updateRes: any) => {
             if (updateErr) {
                 WebUtil.errorResponse(res, updateErr, Constants.SERVER_ERROR, 500);
@@ -36,8 +36,7 @@ class Update {
                     WebUtil.htmlResponse(res, Constants.VERIFIED_HTML, 200);
                 } else {
                     const token: string = JWT.sign(Object.assign({}, doc))
-                    delete doc['password'];
-                    WebUtil.successResponse(res, doc, 200, { bearer: token });
+                    WebUtil.successResponse(res, WebUtil.stripPII(doc), 200, { bearer: token });
                 }
             }
         });
@@ -48,7 +47,7 @@ class Update {
             console.log(Constants.VERIFY_REQ_LOG);
             if (!this.validateVerify(req)) throw new Error(Constants.CLIENT_ERROR_HB);
             const verified = true;
-            this.update({ verified }, req.query.email, res, true);
+            this.update({ verified } as User, req.query.email, res, true);
         } catch (error) {
             WebUtil.errorResponse(res, error, Constants.CLIENT_ERROR_HB, 400);
             return;
