@@ -15,7 +15,7 @@ class Update {
 
     private validateUpdate(req: Request): boolean {
         const body: User = req.body as User;
-        if (!req.headers.bearer && body.email && body.balance && body.verified
+        if (!req.headers.authorization && body.email && body.balance && body.verified
             && body.freeSpots && body.referrals && body.referralCode && body.created_time) {
             return false;
         } else return true;
@@ -36,8 +36,7 @@ class Update {
                 if (flag) {
                     WebUtil.htmlResponse(res, Constants.VERIFIED_HTML_LOCATION, 200);
                 } else {
-                    const token: string = JWT.sign(Object.assign({}, doc))
-                    WebUtil.successResponse(res, WebUtil.stripPII(doc), 200, { bearer: token });
+                    WebUtil.successResponse(res, WebUtil.stripPII(doc), 200);
                 }
             }
         });
@@ -59,9 +58,9 @@ class Update {
         try {
             const spotbackCorrelationId: string | string[] | undefined = req.headers["spotback-correlation-id"];
             if (!this.validateUpdate(req) || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
-            const legit = JWT.verify(req.headers.bearer as string);
+            const legit = JWT.verify(req.headers.authorization as string);
             if (legit) {
-                const email: string = legit._doc.email;
+                const email: string = legit.email;
                 this.update(req.body, email, res, false);
             } else {
                 WebUtil.errorResponse(res, Constants.CLIENT_ERROR_UA_T, Constants.CLIENT_ERROR_UA, 401);

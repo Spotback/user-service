@@ -11,7 +11,7 @@ class Read {
     private validateReq(req: Request): boolean {
         if (req.body && req.body.email && req.body.password) {
             return true;
-        } else if (req.headers && req.headers.bearer) {
+        } else if (req.headers && req.headers.authorization) {
             return true;
         } else {
             return false;
@@ -19,7 +19,7 @@ class Read {
 
     }
 
-    private read(data: any, res: Response, flag: boolean): void {
+    private compare(data: any, res: Response, flag: boolean): void {
         const email: string = data.email;
         UserDB.findOne({ email }, (findErr: any, findResult: User) => {
             if (findErr) {
@@ -31,13 +31,11 @@ class Read {
                         if (compErr) {
                             WebUtil.errorResponse(res, compErr, Constants.CLIENT_ERROR_UA, 401);
                         } else if (match) {
-                            const token: string = JWT.sign(Object.assign({}, findResult))
-                            WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200, { bearer: token });
+                            WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200);
                         }
                     });
                 } else {
-                    const token: string = JWT.sign(Object.assign({}, findResult))
-                    WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200, { bearer: token });
+                    WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200);
                 }
             } else {
                 WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 404);
@@ -49,15 +47,15 @@ class Read {
         });
     }
 
-    private compare(req: Request, res: Response): void {
+    private read(req: Request, res: Response): void {
         const body = req.body;
         if (body && Object.keys(body).length !== 0) {
-            this.read(body, res, true);
+            this.compare(body, res, true);
         } else {
-            const legit = JWT.verify(req.headers.bearer as string);
+            const legit = JWT.verify(req.headers.authorization as string);
             if (legit) {
-                const email: string = legit._doc.email;
-                this.read({ email }, res, false);
+                const email: string = legit.email;
+                this.compare({ email }, res, false);
             } else {
                 WebUtil.errorResponse(res, Constants.CLIENT_ERROR_UA_T, Constants.CLIENT_ERROR_UA, 401);
             }
@@ -69,7 +67,7 @@ class Read {
             console.log(Constants.READ_REQ_LOG);
             const spotbackCorrelationId: string | string[] | undefined = req.headers["spotback-correlation-id"];
             if (!this.validateReq(req) || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
-            this.compare(req, res);
+            this.read(req, res);
         } catch (error) {
             WebUtil.errorResponse(res, error, Constants.CLIENT_ERROR_HB, 400);
             return;
