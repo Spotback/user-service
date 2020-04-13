@@ -50,10 +50,8 @@ class Create {
                     const responseBody = {
                         message: Constants.ACCOUNT_CREATION_MESSAGE,
                         freeSpots: freeSpots
-                    }
-                    const token: string = JWT.sign(Object.assign({}, createResult));
-                    //need to fix this response
-                    WebUtil.successResponse(res, responseBody, 200, { bearer: token });
+                    };
+                    WebUtil.successResponse(res, responseBody, 200);
                     return;
                 }, (createErr: any): void => {
                     WebUtil.errorResponse(res, createErr, Constants.SERVER_ERROR, 500);

@@ -8,18 +8,16 @@ import { checkJwt } from "../middleware/authz.middleware";
 export class Routes { 
     
     public routes(app: Express): void {   
-        
         app.post('/createAccount', Create.account);
         
-        // app.use(checkJwt);
         app.route('/readAccount')
-        .get(Read.account)
+        .get(checkJwt, Read.account)
         .post(Read.account);
 
         app.route('/updateAccount')
-        .post(Update.account)
+        .post(checkJwt, Update.account)
         .get(Update.verify);
 
-        app.delete('/deleteAccount', Delete.account);
+        app.delete('/deleteAccount', checkJwt, Delete.account);
     }
 }
