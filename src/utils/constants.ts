@@ -29,6 +29,7 @@ export const CREATE_REQ_LOG = 'CREATE REQUEST.';
 export const UPDATE_REQ_LOG = 'UPDATE REQUEST.';
 export const VERIFY_REQ_LOG = 'VERIFY REQUEST.';
 export const DELETE_REQ_LOG = 'DELETE REQUEST.';
+export const STRIPE_CREATE_CUSTOMER_ERROR = 'FAILED TO CREATE CUSTOMER.';
 
 //client error response codes
 export const CLIENT_ERROR_UA = 'UNAUTHORIZED.';

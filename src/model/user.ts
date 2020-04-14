@@ -67,6 +67,7 @@ export interface User extends mongoose.Document {
     password: string;
     phone: string;
     profilePic: string;
+    stripeToken: string;
     pushToken: string;
     referrals?: (null)[] | null;
     verified: boolean;
@@ -107,14 +108,6 @@ export const UserSchema = new Schema({
     stripeToken: {
         type: String
     },
-    freeSpots: {
-        type: Number,
-        default: 0
-    },
-    balance: {
-        type: Number,
-        default: 0.00
-    },
     referrals: {
         type: Array<string>(),
         default: []
@@ -128,14 +121,22 @@ export const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    created_time: {
+        type: Date,
+        required: true
+    },
+    freeSpots: {
+        type: Number,
+        default: 0
+    },
+    balance: {
+        type: Number,
+        default: 0.00
+    },
     car: {
         type: carSchema,
         default: null
     },
-    created_time: {
-        type: Date,
-        required: true
-    }
 });
 
 const UserDB = mongoose.model<User>(Constants.USERS_TABLE, UserSchema);
