@@ -15,8 +15,8 @@ json -I -f package.json -e "this.version='$version'"
 ./build.sh
 # tag it
 git add -A
-git commit -m "version $version"
-git tag -a "$version" -m "version $version"
+git commit -m "version $version - $1"
+git tag -a "$version" -m "version $1"
 git push
 git push --tags
 docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version

@@ -50,7 +50,7 @@ secure-env .env -s <password>
 ## After changes have been tested you can push a new image version
 
 ```sh
-$ ./release.sh
+$ ./release.sh '<Release notes>'
 ```
 
 After this you should have your image ready for use.
