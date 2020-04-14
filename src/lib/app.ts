@@ -8,7 +8,7 @@ class App {
 
     public app: Express = express();
     public routePrv: Routes = new Routes();
-    public mongoUrl = process.env.MONGO_HOST ? `mongodb://${process.env.MONGO_HOST}:27017/Users` : 'mongodb://localhost/Users';
+    public mongoUrl = process.env.MONGO_URL as string;
 
     constructor() {
         this.config();
