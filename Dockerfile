@@ -16,7 +16,7 @@ RUN npm install
 
 EXPOSE 3000
 
-ENV MONGO_HOST "host.docker.internal"
+# ENV MONGO_HOST "host.docker.internal"
 
 CMD [ "npm", "run", "start" ]
 
