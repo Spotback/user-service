@@ -23,7 +23,6 @@ class JWTUtil {
         if(!token) {
             return false;
         }
-        console.log(process.cwd());
         const verifyOptions: VerifyOptions = {
             issuer:  this.i,
             audience:  this.a,
@@ -35,6 +34,7 @@ class JWTUtil {
             return legit;
         } else {
             console.debug(Constants.JWT_SUCCESS_LOG);
+            console.log(legit)
             return legit;
         }
     }

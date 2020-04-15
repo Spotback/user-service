@@ -61,7 +61,11 @@ class Create {
                             return;
                         });
                     } else {
+<<<<<<< HEAD
                         WebUtil.errorResponse(res, Constants.STRIPE_ERROR, Constants.SERVER_ERROR, 500);
+=======
+                        WebUtil.errorResponse(res, 'createErr', Constants.SERVER_ERROR, 500);
+>>>>>>> ca9f07e14279a60fb3faf2c3d952309a6d7a3488
                         return;
                     }
                 });
