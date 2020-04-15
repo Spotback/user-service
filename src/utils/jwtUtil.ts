@@ -1,7 +1,6 @@
 import jwt, { SignOptions, VerifyOptions, Algorithm } from 'jsonwebtoken';
 import fs from 'fs';
 import * as Constants from '../utils/constants';
-import {User} from "../model/user";
 
 class JWTUtil {
     
