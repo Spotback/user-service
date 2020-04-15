@@ -1,6 +1,6 @@
 {
   "name": "user-service",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Spotback backend user service",
   "main": "build/lib/server.js",
   "scripts": {
