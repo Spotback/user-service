@@ -5,3 +5,4 @@ README.md
 .git
 .gitignore
 enpoints
+node_modules
