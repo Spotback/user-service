@@ -1,15 +1,10 @@
-
 export const VERIFIED_HTML_LOCATION = '/verified.html';
 export const WELCOME_HTML_LOCATION = './resources/welcome.html';
 export const WELCOME_SUBJECT = 'Thank you for joining the Spotback community!';
-export const ENV_LOCATION = '.';
 export const STATIC_RESOURCES = './resources';
 export const KEY_LOCATION = './resources/key.pem';
 export const CERT_LOCATION = './resources/cert.pem';
 export const USERS_TABLE = 'Users';
-
-export const ISSUER = 'spotbackapp.com';
-export const AUDIENCE = 'https://www.spotbackapp.com';
 
 //response messages
 export const ACCOUNT_EXISTS_LOG = 'An account with that email already exists.';
@@ -20,6 +15,7 @@ export const ACCOUNT_DELETED_MESSAGE = 'Account deleted';
 export const JWT_VERIFY_LOG = 'ATTEMPTING TO VERIFY';
 export const JWT_SUCCESS_LOG = 'VERIFICATION SUCCEEDED';
 export const JWT_FAILURE_LOG = 'VERIFICATION FAILED';
+export const STRIPE_ERROR = 'ERROR WITH STRIPE';
 export const INVALID_PASS_MATCH = 'INVALID PASSWORD MATCH';
 export const START_UP_MESSAGE = 'EXPRESS SERVER LISTENING ON PORT ';
 export const SUCCESS = 'SUCCESS.';
@@ -28,6 +24,7 @@ export const CREATE_REQ_LOG = 'CREATE REQUEST.';
 export const UPDATE_REQ_LOG = 'UPDATE REQUEST.';
 export const VERIFY_REQ_LOG = 'VERIFY REQUEST.';
 export const DELETE_REQ_LOG = 'DELETE REQUEST.';
+export const STRIPE_CREATE_CUSTOMER_ERROR = 'FAILED TO CREATE CUSTOMER.';
 
 //client error response codes
 export const CLIENT_ERROR_UA = 'UNAUTHORIZED.';

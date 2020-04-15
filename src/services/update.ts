@@ -1,4 +1,3 @@
-
 import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
 import JWT from '../utils/jwtUtil';
@@ -57,11 +56,12 @@ class Update {
 
     public account = (req: Request, res: Response): void => {
         try {
+            console.log(Constants.UPDATE_REQ_LOG);
             const spotbackCorrelationId: string | string[] | undefined = req.headers["spotback-correlation-id"];
             if (!this.validateUpdate(req) || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
             const legit = JWT.verify(req.headers.bearer as string);
             if (legit) {
-                const email: string = legit._doc.email;
+                const email: string = legit.email;
                 this.update(req.body, email, res, false);
             } else {
                 WebUtil.errorResponse(res, Constants.CLIENT_ERROR_UA_T, Constants.CLIENT_ERROR_UA, 401);

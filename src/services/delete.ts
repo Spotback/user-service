@@ -1,4 +1,3 @@
-
 import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
 import JWT from '../utils/jwtUtil';
@@ -27,7 +26,7 @@ class Delete {
     private validate(req: Request, res: Response): void {
         const legit = JWT.verify(req.headers.bearer as string);
         if (legit) {
-            const email: string = legit._doc.email;
+            const email: string = legit.email;
             this.delete({ email }, res);
         } else {
             WebUtil.errorResponse(res, Constants.CLIENT_ERROR_UA_T, Constants.CLIENT_ERROR_UA, 401);
@@ -39,7 +38,7 @@ class Delete {
         try {
             console.log(Constants.DELETE_REQ_LOG);
             const spotbackCorrelationId: string | string[] | undefined = req.headers['spotback-correlation-id'];
-            if (!req.headers.bearer || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
+            if (!req.headers.authorization || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
             this.validate(req, res);
         } catch (error) {
             WebUtil.errorResponse(res, error, Constants.CLIENT_ERROR_HB, 400);

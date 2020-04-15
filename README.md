@@ -33,10 +33,24 @@ $ docker build -t spotback/user-service:x.x.x-TEST .
 $ docker run -p 127.0.0.1:8080:3000 spotback/user-service:x.x.x-TEST
 ```
 
+## Changing the config
+
+You can add to the .env in the following format:
+
+```txt
+KEY=VALUE
+```
+
+## Encrypt the config file that app will read
+
+```sh
+secure-env .env -s <password>
+```
+
 ## After changes have been tested you can push a new image version
 
 ```sh
-$ ./release.sh
+$ ./release.sh '<Release notes>'
 ```
 
 After this you should have your image ready for use.

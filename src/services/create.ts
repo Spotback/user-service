@@ -8,6 +8,7 @@ import Auth from '../utils/auth'
 import UserDB, { User } from '../model/user';
 import { Request, Response } from 'express';
 import * as fs from 'fs';
+import * as Stripe from '../utils/stripeUtil'
 
 class Create {
 
@@ -41,23 +42,29 @@ class Create {
                     }, (updateErr: any, doc: User | null, updateRes: any) => {
                         if (updateErr) {
                             console.log(updateErr);
-                        } else if(doc) {
+                        } else if (doc) {
                             freeSpots = 1
                         }
                     });
                 }
-                UserDB.create(newUser).then((createResult: User): void => {
-                    const responseBody = {
-                        message: Constants.ACCOUNT_CREATION_MESSAGE,
-                        freeSpots: freeSpots
+                const id = Stripe.createCustomer(newUser).then((id: any) => {
+                    if (id) {
+                        newUser.stripeToken = id;
+                        UserDB.create(newUser).then((createResult: User): void => {
+                            const responseBody = {
+                                message: Constants.ACCOUNT_CREATION_MESSAGE,
+                                freeSpots: freeSpots
+                            };
+                            const token: string = JWT.sign(Object.assign({}, createResult));
+                            WebUtil.successResponse(res, responseBody, 200, { bearer: token });
+                        }, (createErr: any): void => {
+                            WebUtil.errorResponse(res, createErr, Constants.SERVER_ERROR, 500);
+                            return;
+                        });
+                    } else {
+                        WebUtil.errorResponse(res, Constants.STRIPE_ERROR, Constants.SERVER_ERROR, 500);
+                        return;
                     }
-                    const token: string = JWT.sign(Object.assign({}, createResult));
-                    //need to fix this response
-                    WebUtil.successResponse(res, responseBody, 200, { bearer: token });
-                    return;
-                }, (createErr: any): void => {
-                    WebUtil.errorResponse(res, createErr, Constants.SERVER_ERROR, 500);
-                    return;
                 });
             }
         })
@@ -71,7 +78,7 @@ class Create {
             const body: User = req.body ? req.body as User : {} as User;
             const spotbackCorrelationId: string | string[] | undefined = req.headers["spotback-correlation-id"];
             if (!this.validateNewAccnt(body) || !spotbackCorrelationId) throw new Error(Constants.CLIENT_ERROR_HB);
-            UserDB.findOne(body, (findErr: any, findRes: User | null): void => {
+            UserDB.findOne({email: body.email, phone: body.phone }, (findErr: any, findRes: User | null): void => {
                 if (findErr) {
                     WebUtil.errorResponse(res, findErr, Constants.SERVER_ERROR, 500);
                     return;

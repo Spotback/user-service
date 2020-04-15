@@ -29,36 +29,17 @@ export const dotify = (obj: any) => {
     return res;
   }
 
-export class CarObject {
-    public carType!: string;
-    public color!: string;
-    public make!: string;
-    public model!: string;
-    public year!: string;
+export interface Car {
+    carType: string;
+    color: string;
+    make: string;
+    model: string;
+    year: string;
 }
-
-const carSchema = new Schema({
-    make: {
-        type: String,
-        required: true
-    },
-    model: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: Number,
-        required: true
-    },
-    carType: {
-        type: String,
-        required: true
-    }
-})
 
 export interface User extends mongoose.Document {
     balance: number;
-    car: CarObject;
+    car: Car;
     created_time: number;
     email: string;
     firstName: string;
@@ -67,6 +48,7 @@ export interface User extends mongoose.Document {
     password: string;
     phone: string;
     profilePic: string;
+    stripeToken: string;
     pushToken: string;
     referrals?: (null)[] | null;
     verified: boolean;
@@ -107,14 +89,6 @@ export const UserSchema = new Schema({
     stripeToken: {
         type: String
     },
-    freeSpots: {
-        type: Number,
-        default: 0
-    },
-    balance: {
-        type: Number,
-        default: 0.00
-    },
     referrals: {
         type: Array<string>(),
         default: []
@@ -128,14 +102,22 @@ export const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    car: {
-        type: carSchema,
-        default: null
-    },
     created_time: {
         type: Date,
         required: true
-    }
+    },
+    freeSpots: {
+        type: Number,
+        default: 0
+    },
+    balance: {
+        type: Number,
+        default: 0.00
+    },
+    car: {
+        type: Object,
+        default: null
+    },
 });
 
 const UserDB = mongoose.model<User>(Constants.USERS_TABLE, UserSchema);

@@ -1,6 +1,7 @@
 import jwt, { SignOptions, VerifyOptions, Algorithm } from 'jsonwebtoken';
 import fs from 'fs';
 import * as Constants from '../utils/constants';
+import {User} from "../model/user";
 
 class JWTUtil {
     
@@ -13,16 +14,15 @@ class JWTUtil {
         this.algorithm = process.env.ALGORITHM as string;
         this.publicKey = fs.readFileSync(Constants.CERT_LOCATION);
         this.privateKey = fs.readFileSync(Constants.KEY_LOCATION);
-        this.i  = Constants.ISSUER;          // Issuer 
-        this.a  = Constants.AUDIENCE; // Audience
+        this.i  = process.env.AUTH0_ISSUER as string;          // Issuer
+        this.a  = process.env.AUTH0_AUDIENCE as string; // Audience
     }
 
     public verify(token: string): any {
         console.debug(Constants.JWT_VERIFY_LOG);
         if(!token) {
-            return token;
+            return false;
         }
-        console.log(process.cwd());
         const verifyOptions: VerifyOptions = {
             issuer:  this.i,
             audience:  this.a,
@@ -34,10 +34,11 @@ class JWTUtil {
             return legit;
         } else {
             console.debug(Constants.JWT_SUCCESS_LOG);
+            console.log(legit)
             return legit;
         }
     }
-    
+
     public sign(payload: any): string {
         const signOptions: SignOptions = {
             issuer:  this.i,
@@ -45,7 +46,7 @@ class JWTUtil {
             expiresIn:  process.env.JWT_EXPIRATION,
             algorithm:  this.algorithm as Algorithm
         };
-        const token: string = jwt.sign(payload, this.privateKey, signOptions);
+        const token: string = jwt.sign({email:payload._doc.email}, this.privateKey, signOptions);
         return token;
     }
 }
