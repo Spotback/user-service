@@ -1,6 +1,7 @@
 
 import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
+import JWT from '../utils/jwtUtil';
 import EMAIL from '../utils/emailUtil';
 import uuidv1 from 'uuid/v1';
 import Auth from '../utils/auth'
@@ -54,18 +55,14 @@ class Create {
                                 message: Constants.ACCOUNT_CREATION_MESSAGE,
                                 freeSpots: freeSpots
                             };
-                            WebUtil.successResponse(res, responseBody, 200);
-                            return;
+                            const token: string = JWT.sign(Object.assign({}, createResult));
+                            WebUtil.successResponse(res, responseBody, 200, { bearer: token });
                         }, (createErr: any): void => {
                             WebUtil.errorResponse(res, createErr, Constants.SERVER_ERROR, 500);
                             return;
                         });
                     } else {
-<<<<<<< HEAD
                         WebUtil.errorResponse(res, Constants.STRIPE_ERROR, Constants.SERVER_ERROR, 500);
-=======
-                        WebUtil.errorResponse(res, 'createErr', Constants.SERVER_ERROR, 500);
->>>>>>> ca9f07e14279a60fb3faf2c3d952309a6d7a3488
                         return;
                     }
                 });

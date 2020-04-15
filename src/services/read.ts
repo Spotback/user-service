@@ -10,7 +10,7 @@ class Read {
     private validateReq(req: Request): boolean {
         if (req.body && req.body.email && req.body.password) {
             return true;
-        } else if (req.headers && req.headers.authorization) {
+        } else if (req.headers && req.headers.bearer) {
             return true;
         } else {
             return false;
@@ -30,11 +30,13 @@ class Read {
                         if (compErr) {
                             WebUtil.errorResponse(res, compErr, Constants.CLIENT_ERROR_UA, 401);
                         } else if (match) {
-                            WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200);
+                            const token: string = JWT.sign(Object.assign({}, findResult))
+                            WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200, { bearer: token });
                         }
                     });
                 } else {
-                    WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200);
+                    const token: string = JWT.sign(Object.assign({}, findResult))
+                    WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200, { bearer: token });
                 }
             } else {
                 WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 404);

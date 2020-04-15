@@ -24,7 +24,7 @@ class Delete {
     }
 
     private validate(req: Request, res: Response): void {
-        const legit = JWT.verify(req.headers.authorization as string);
+        const legit = JWT.verify(req.headers.bearer as string);
         if (legit) {
             const email: string = legit.email;
             this.delete({ email }, res);
