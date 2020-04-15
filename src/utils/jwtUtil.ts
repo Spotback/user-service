@@ -1,39 +1,54 @@
 import jwt, { SignOptions, VerifyOptions, Algorithm } from 'jsonwebtoken';
 import fs from 'fs';
 import * as Constants from '../utils/constants';
+import {User} from "../model/user";
 
 class JWTUtil {
     
     private readonly algorithm: string;
     private readonly publicKey: any;
     private readonly privateKey: any;
-    private readonly i: any;
-    private readonly a: any;
+    private readonly i: string;
+    private readonly a: string;
     constructor() {
         this.algorithm = process.env.ALGORITHM as string;
         this.publicKey = fs.readFileSync(Constants.CERT_LOCATION);
         this.privateKey = fs.readFileSync(Constants.KEY_LOCATION);
-        this.i  = process.env.AUTH0_ISSUER;          // Issuer 
-        this.a  = process.env.AUTH0_AUDIENCE; // Audience
+        this.i  = process.env.AUTH0_ISSUER as string;          // Issuer
+        this.a  = process.env.AUTH0_AUDIENCE as string; // Audience
     }
 
-    public verify(authorization: string): any {
+    public verify(token: string): any {
         console.debug(Constants.JWT_VERIFY_LOG);
-        if(!authorization) {
+        if(!token) {
             return false;
         }
-        const token: string = authorization.split('.')[1];
-        const payloadBase64 = Buffer.from(token, 'base64').toString();
-        const payload = JSON.parse(payloadBase64);
-        const legit = payload.sub.split('|')[1];
-        console.log(legit);
+        console.log(process.cwd());
+        const verifyOptions: VerifyOptions = {
+            issuer:  this.i,
+            audience:  this.a,
+            algorithms:  [this.algorithm as Algorithm]
+        };
+        const legit = jwt.verify(token, this.publicKey, verifyOptions);
         if(!legit) {
             console.debug(Constants.JWT_FAILURE_LOG);
             return legit;
         } else {
             console.debug(Constants.JWT_SUCCESS_LOG);
-            return {email: legit};
+            return legit;
         }
     }
+
+    public sign(payload: any): string {
+        const signOptions: SignOptions = {
+            issuer:  this.i,
+            audience:  this.a,
+            expiresIn:  process.env.JWT_EXPIRATION,
+            algorithm:  this.algorithm as Algorithm
+        };
+        const token: string = jwt.sign({email:payload._doc.email}, this.privateKey, signOptions);
+        return token;
+    }
 }
+
 export default new JWTUtil();

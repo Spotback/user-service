@@ -1,7 +1,6 @@
 
 import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
-// import JWT from '../utils/jwtUtil';
 import EMAIL from '../utils/emailUtil';
 import uuidv1 from 'uuid/v1';
 import Auth from '../utils/auth'
@@ -62,7 +61,7 @@ class Create {
                             return;
                         });
                     } else {
-                        WebUtil.errorResponse(res, 'createErr', Constants.SERVER_ERROR, 500);
+                        WebUtil.errorResponse(res, Constants.STRIPE_ERROR, Constants.SERVER_ERROR, 500);
                         return;
                     }
                 });

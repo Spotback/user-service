@@ -1,5 +1,6 @@
 import * as Constants from '../utils/constants';
 import Stripe from 'stripe';
+import {User} from "../model/user";
 const stripe = new Stripe(process.env.STRIPE_KEY as any, {
     apiVersion: '2020-03-02',
 });
@@ -23,7 +24,7 @@ export const withdraw = (client: any, amount: any): void => {
 
 }
 
-export const createCustomer = async (newUser: any): Promise<any> => {
+export const createCustomer = async (newUser: User): Promise<any> => {
     const params: Stripe.CustomerCreateParams = {
         email: newUser.email,
         name: newUser.firstName + ' ' + newUser.lastName,

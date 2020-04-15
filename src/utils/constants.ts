@@ -1,15 +1,10 @@
-
 export const VERIFIED_HTML_LOCATION = '/verified.html';
 export const WELCOME_HTML_LOCATION = './resources/welcome.html';
 export const WELCOME_SUBJECT = 'Thank you for joining the Spotback community!';
-export const ENV_LOCATION = '.';
 export const STATIC_RESOURCES = './resources';
 export const KEY_LOCATION = './resources/key.pem';
 export const CERT_LOCATION = './resources/cert.pem';
 export const USERS_TABLE = 'Users';
-
-export const ISSUER = 'spotbackapp.com';
-export const AUDIENCE = 'https://www.spotbackapp.com';
 
 //response messages
 export const ACCOUNT_EXISTS_LOG = 'An account with that email already exists.';
