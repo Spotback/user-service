@@ -53,7 +53,7 @@ class Read {
         if (body && Object.keys(body).length !== 0) {
             this.compare(body, res, true);
         } else {
-            const legit = JWT.verify(req.headers.authorization as string);
+            const legit = JWT.verify(req.headers.bearer as string);
             if (legit) {
                 const email: string = legit.email;
                 this.compare({ email }, res, false);
