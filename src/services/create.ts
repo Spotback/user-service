@@ -3,7 +3,7 @@ import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
 import JWT from '../utils/jwtUtil';
 import EMAIL from '../utils/emailUtil';
-import uuidv1 from 'uuid/v1';
+import { v1 as uuidv1 } from 'uuid';
 import Auth from '../utils/auth'
 import UserDB, { User } from '../model/user';
 import { Request, Response } from 'express';

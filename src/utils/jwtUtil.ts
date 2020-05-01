@@ -10,9 +10,10 @@ class JWTUtil {
     private readonly i: string;
     private readonly a: string;
     constructor() {
+        // this.algorithm = process.env.ALGORITHM as string;
         this.algorithm = process.env.ALGORITHM as string;
-        this.publicKey = fs.readFileSync(Constants.CERT_LOCATION);
-        this.privateKey = fs.readFileSync(Constants.KEY_LOCATION);
+        this.publicKey = fs.readFileSync(Constants.PUBLIC_LOCATION);
+        this.privateKey = fs.readFileSync(Constants.PRIVATE_LOCATION);
         this.i  = process.env.AUTH0_ISSUER as string;          // Issuer
         this.a  = process.env.AUTH0_AUDIENCE as string; // Audience
     }

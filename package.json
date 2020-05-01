@@ -48,6 +48,7 @@
     "nodemailer": "^6.4.6",
     "secure-env": "^1.2.0",
     "stripe": "^8.39.2",
-    "ts-mongoose": "0.0.21"
+    "ts-mongoose": "0.0.21",
+    "uuid": "^8.0.0"
   }
 }

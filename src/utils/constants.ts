@@ -4,6 +4,8 @@ export const WELCOME_SUBJECT = 'Thank you for joining the Spotback community!';
 export const STATIC_RESOURCES = './resources';
 export const KEY_LOCATION = './resources/key.pem';
 export const CERT_LOCATION = './resources/cert.pem';
+export const PUBLIC_LOCATION = './resources/public.pem';
+export const PRIVATE_LOCATION = './resources/private.pem';
 export const USERS_TABLE = 'Users';
 
 //response messages

@@ -43,7 +43,7 @@ class Read {
                 return;
             }
         }).catch((err: any) => {
-            WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 500);
+            WebUtil.errorResponse(res, err, Constants.SERVER_ERROR, 500);
             return;
         });
     }
