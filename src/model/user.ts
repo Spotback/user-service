@@ -53,6 +53,7 @@ export interface User extends mongoose.Document {
     referrals?: (null)[] | null;
     verified: boolean;
     referralCode?: string;
+    rating: number;
 }
 
 export const UserSchema = new Schema({
@@ -118,6 +119,10 @@ export const UserSchema = new Schema({
         type: Object,
         default: {}
     },
+    rating: {
+        type: Number,
+        default: 0,
+    }
 });
 
 const UserDB = mongoose.model<User>(Constants.USERS_TABLE, UserSchema);

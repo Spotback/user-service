@@ -3,6 +3,7 @@ import Create from '../services/create';
 import Read from '../services/read';
 import Update from '../services/update'
 import Delete from '../services/delete'
+import Rate from '../services/rate';
 
 export class Routes {
 
@@ -16,6 +17,8 @@ export class Routes {
         app.route('/updateAccount')
             .post(Update.account)
             .get(Update.verify);
+
+        app.post('/updateRating', Rate.account);
 
         app.delete('/deleteAccount', Delete.account);
     }
