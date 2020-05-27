@@ -116,7 +116,7 @@ export const UserSchema = new Schema({
     },
     car: {
         type: Object,
-        default: null
+        default: {}
     },
 });
 

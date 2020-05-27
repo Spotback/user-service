@@ -22,7 +22,7 @@ class Read {
         const email: string = data.email;
         UserDB.findOne({ email }, (findErr: any, findResult: User) => {
             if (findErr) {
-                WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 404);
+                WebUtil.errorResponse(res, findErr, Constants.SERVER_ERROR, 500);
                 return;
             } else if(findResult) {
                 if (data.password && flag) {
@@ -39,7 +39,7 @@ class Read {
                     WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200, { bearer: token });
                 }
             } else {
-                WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 404);
+                WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 204);
                 return;
             }
         }).catch((err: any) => {
