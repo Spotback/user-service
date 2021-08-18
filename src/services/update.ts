@@ -28,13 +28,16 @@ class Update {
      * @param flag respond with updated data
      */
     private update(data: User, email: string, res: Response, flag: boolean): void {
-        UserDB.findOneAndUpdate({ email }, dotify(data), (updateErr: any, doc: User | null, updateRes: any) => {
+        UserDB.findOneAndUpdate({ email }, dotify(data), {}, (updateErr: any, doc: User | null, updateRes: any) => {
             if (updateErr) {
                 WebUtil.errorResponse(res, updateErr, Constants.SERVER_ERROR, 500);
             } else if (doc) {
                 if (flag) {
                     WebUtil.htmlResponse(res, Constants.VERIFIED_HTML_LOCATION, 200);
                 } else {
+                    /**
+                     * add the new fields to the object
+                     */
                     const token: string = JWT.sign(Object.assign({}, doc))
                     WebUtil.successResponse(res, WebUtil.stripPII(doc), 200, { bearer: token });
                 }
@@ -47,7 +50,7 @@ class Update {
             console.log(Constants.VERIFY_REQ_LOG);
             if (!this.validateVerify(req)) throw new Error(Constants.CLIENT_ERROR_HB);
             const verified = true;
-            this.update({ verified } as User, req.query.email, res, true);
+            this.update({ verified } as User, req.query.email as string, res, true);
         } catch (error) {
             WebUtil.errorResponse(res, error, Constants.CLIENT_ERROR_HB, 400);
             return;

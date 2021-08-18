@@ -8,7 +8,7 @@ class Delete {
 
     private delete(data: any, res: Response): void {
         const email: string = data.email;
-        UserDB.findOneAndDelete({ email }, (findErr: any, findResult: User | null) => {
+        UserDB.findOneAndDelete({ email }, {}, (findErr: any, findResult: User | null) => {
             if (findErr) {
                 WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 404);
                 return;

@@ -8,6 +8,9 @@ import Rate from '../services/rate';
 export class Routes {
 
     public routes(app: Express): void {
+        app.get('/ping', (req, res) => {
+            res.status(200).send();
+        })
         app.post('/createAccount', Create.account);
 
         app.route('/readAccount')

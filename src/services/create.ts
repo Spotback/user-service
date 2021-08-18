@@ -5,7 +5,7 @@ import JWT from '../utils/jwtUtil';
 import EMAIL from '../utils/emailUtil';
 import { v1 as uuidv1 } from 'uuid';
 import Auth from '../utils/auth'
-import UserDB, { User } from '../model/user';
+import UserDB, { User, Car } from '../model/user';
 import { Request, Response } from 'express';
 import * as fs from 'fs';
 import * as Stripe from '../utils/stripeUtil'
@@ -39,7 +39,7 @@ class Create {
                         $inc: {
                             freeSpots: 1
                         }
-                    }, (updateErr: any, doc: User | null, updateRes: any) => {
+                    }, {}, (updateErr: any, doc: User | null, updateRes: any) => {
                         if (updateErr) {
                             console.log(updateErr);
                         } else if (doc) {

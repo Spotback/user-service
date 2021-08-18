@@ -2,7 +2,7 @@ import * as Constants from '../utils/constants';
 import Stripe from 'stripe';
 import {User} from "../model/user";
 const stripe = new Stripe(process.env.STRIPE_KEY as any, {
-    apiVersion: '2020-03-02',
+    apiVersion: '2020-08-27',
 });
 
 export const chargeClient = (client: any, amount: any): void => {
@@ -15,7 +15,7 @@ export const chargeClient = (client: any, amount: any): void => {
         currency: 'usd',
         description: 'Example charge',
         source: "pm_1FjI4gIELhTkPYaGiccMi696"
-    });
+    } as any);
 }
 
 export const withdraw = (client: any, amount: any): void => {

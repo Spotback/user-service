@@ -59,7 +59,7 @@ class Rate {
 
     private updateAvgRating = (email: string, rating: number, res: Response): void => {
         // add updated rating to user table
-        UserDB.findOneAndUpdate({ email }, { rating }, (findErr: any, findResult: any | null) => {
+        UserDB.findOneAndUpdate({ email }, { rating }, {}, (findErr: any, findResult: any | null) => {
             if (findErr) {
                 WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 404);
                 return;
@@ -104,7 +104,7 @@ class Rate {
                                     WebUtil.errorResponse(res, userWhoIsGettingRatedError, Constants.SERVER_ERROR, 500);
                                     return;
                                 } else {
-                                    UserTransactionDB.findOneAndUpdate({ email: userGettingRated }, { transactions: userWhoGettingRatedResult }, (findErr: any, findResult: UserTransactions | null) => {
+                                    UserTransactionDB.findOneAndUpdate({ email: userGettingRated }, { transactions: userWhoGettingRatedResult }, {},(findErr: any, findResult: UserTransactions | null) => {
                                         if (findErr) {
                                             WebUtil.errorResponse(res, findErr, Constants.SERVER_ERROR, 500);
                                             return;
