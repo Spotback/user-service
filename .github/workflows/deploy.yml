@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - master
-env:
-  AWS_REGION: ${{ env.AWS_REGION }}
-  AWS_LIGHTSAIL_SERVICE_NAME: ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
 jobs:
   deploy:
     name: Build and deploy
