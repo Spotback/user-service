@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - master
-env:
-  AWS_REGION: us-east-1
-  AWS_LIGHTSAIL_SERVICE_NAME: users
 jobs:
   deploy:
     name: Build and deploy
@@ -29,18 +26,20 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build Docker Image
-        run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:latest .
+        run: docker build -t ${{ secrets.AWS_LIGHTSAIL_SERVICE_NAME }}:latest .
       - name: Push and Deploy
         run: |
-          service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
-          env=${{ env.AWS_REGION }}
+          service_name=${{ secret.AWS_LIGHTSAIL_SERVICE_NAME }}
+          env=${{ secrets.AWS_REGION }}
           aws lightsail push-container-image \
             --region ${env} \
             --service-name ${service_name} \
             --label ${service_name} \
             --image ${service_name}:latest
-          aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json '{ "containers": { "users-container": { "image": "users:latest", "environment": { "APP_ENV": "release", "NODE_ENV": "production" }, "ports": { "80": "HTTP" } } }, "publicEndpoint": { "containerName": "users-container", "containerPort": 80, "healthCheck": { "healthyThreshold": 10, "unhealthyThreshold": 10, "timeoutSeconds": 120, "intervalSeconds": 300, "path": "/ping", "successCodes": "200-499" } } }'
+          aws lightsail get-container-images --service-name ${service_name} | jq --raw-output ".containerImages[0].image" > image.txt
+          jq --arg image $(cat image.txt) '.containers.app.image = $image' container.template.json > container.json
+          aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json file://$(pwd)/container.json
