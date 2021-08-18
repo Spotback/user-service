@@ -43,3 +43,6 @@ jobs:
             --service-name ${service_name} \
             --label ${service_name} \
             --image ${service_name}:latest
+          aws lightsail get-container-images --service-name ${service_name} | jq --raw-output ".containerImages[0].image" > image.txt
+          jq --arg image $(cat image.txt) '.containers.app.image = $image' container.template.json > container.json
+          aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json '{ "containers": { "${service_name}-container": { "image": "${service_name}:latest", "environment": { "APP_ENV": "release", "NODE_ENV": "production" }, "ports": { "80": "HTTP" } } }, "publicEndpoint": { "containerName": "${service_name}-container", "containerPort": 80, "healthCheck": { "healthyThreshold": 60, "unhealthyThreshold": 60, "timeoutSeconds": 120, "intervalSeconds": 300, "path": "/ping", "successCodes": "200-499" } } }'
