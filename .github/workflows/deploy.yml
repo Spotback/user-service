@@ -42,4 +42,4 @@ jobs:
             --region ${env} \
             --service-name ${service_name} \
             --label ${service_name} \
-            --image user-service:latest
+            --image ${service_name}:latest
