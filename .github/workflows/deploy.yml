@@ -4,7 +4,7 @@ on:
     branches:
       - master
 env:
-  AWS_REGION: us-west-2
+  AWS_REGION: us-east-1
   AWS_LIGHTSAIL_SERVICE_NAME: users
 jobs:
   deploy:
@@ -44,4 +44,4 @@ jobs:
             --image ${service_name}:latest
           aws lightsail get-container-images --service-name ${service_name} | jq --raw-output ".containerImages[0].image" > image.txt
           jq --arg image $(cat image.txt) '.containers.app.image = $image' container.template.json > container.json
-          aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json file://$(pwd)/container.json
+          aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json '{ "containers": { "${service_name}-service": { "image": "", "ports": { "80": "HTTP" } } }, "publicEndpoint": { "containerName": "${service_name}-service", "containerPort": 80, "healthCheck": { "healthyThreshold": 60, "unhealthyThreshold": 60, "timeoutSeconds": 5, "intervalSeconds": 10, "path": "/", "successCodes": "200-499" } } }'
