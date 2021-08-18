@@ -9,7 +9,7 @@ COPY ./.env.enc ./
 COPY ./resources/ ./resources
 RUN npm install
 RUN npm run build
-COPY ./build/. ./build/
+COPY ./build/ ./build/
 EXPOSE 80
 
 CMD [ "npm", "run", "start" ]
