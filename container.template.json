@@ -1,6 +1,6 @@
 {
     "containers": {
-        "users_container": {
+        "usersContainer": {
             "image": "",
             "environment": {
                 "APP_ENV": "release",
@@ -12,7 +12,7 @@
         }
     },
     "publicEndpoint": {
-        "containerName": "users_container",
+        "containerName": "usersContainer",
         "containerPort": 80,
         "healthCheck": {
             "healthyThreshold": 10,
