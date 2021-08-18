@@ -37,8 +37,9 @@ jobs:
       - name: Push and Deploy
         run: |
           service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
+          env=${{ env.AWS_REGION }}
           aws lightsail push-container-image \
-            --region us-east-1 \
+            --region ${env} \
             --service-name ${service_name} \
             --label ${service_name} \
-            --image ${service_name}:latest
+            --image user-service:latest
