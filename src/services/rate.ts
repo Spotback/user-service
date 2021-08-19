@@ -4,16 +4,18 @@ import JWT from '../utils/jwtUtil';
 import { Request, Response, response } from 'express';
 import UserTransactionDB, { TransactionDetail, UserTransactions, Rating } from '../model/transaction';
 import UserDB from '../model/user';
-import { match } from 'assert';
+
 
 class Rate {
 
     // Validate if user has transaction using token, id and stars
     private validate(req: Request): boolean {
         const body = req.body;
-        if (req.headers.bearer && body.transactionId && body.stars) {
-            return true;
-        } else return false;
+        if (!req.headers.bearer || !body.transactionId || !body.stars) {
+            return false;
+        } else if(body.transactionId.length === 0) {
+            return false;
+        } else return true;
     } 
     // find transaction using email as index
     private findTransaction = async (email: string, req: Request, res: Response, flag: boolean, callback: Function) => {
@@ -23,7 +25,7 @@ class Rate {
         UserTransactionDB.findOne({ email }, (findErr: any, findResult: UserTransactions) => {
             if (findErr) {
                 callback(Constants.TRANSACTION_NOT_FOUND, null)
-            } else {
+            } else if(findResult) {
                 //flag: true for user getting rated and false for user giving rating
                 if (flag) {
                     findResult.transactions.forEach(transactionDetail => {
@@ -52,6 +54,8 @@ class Rate {
                         callback(null, matchingTransaction);
                     }
                 }
+            } else {
+                WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_TRANSACTION_NA, 404);
             }
 
         });
