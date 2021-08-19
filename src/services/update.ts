@@ -14,8 +14,8 @@ class Update {
 
     private validateUpdate(req: Request): boolean {
         const body: User = req.body as User;
-        if (!req.headers.bearer && body.email && body.balance && body.verified
-            && body.freeSpots && body.referrals && body.referralCode && body.created_time) {
+        if (!req.headers.bearer || body.email || body.balance || body.verified
+            || body.freeSpots || body.referrals || body.referralCode || body.created_time || body.password) {
             return false;
         } else return true;
     }
