@@ -41,6 +41,8 @@ class Update {
                     const token: string = JWT.sign(Object.assign({}, doc))
                     WebUtil.successResponse(res, WebUtil.stripPII(doc), 200, { bearer: token });
                 }
+            } else {
+                WebUtil.errorResponse(res, updateErr, Constants.CLIENT_ERROR_A_NA, 404);
             }
         });
     }
