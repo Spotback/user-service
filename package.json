@@ -36,7 +36,7 @@
     "@types/jsonwebtoken": "^8.3.9",
     "@types/lodash": "^4.14.149",
     "@types/nodemailer": "^6.4.0",
-    "@types/stripe": "^8.0.417",
+    "@types/stripe": "^7.13.25",
     "aws4": "^1.11.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
