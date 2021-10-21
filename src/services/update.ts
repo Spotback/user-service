@@ -39,7 +39,7 @@ class Update {
                      * add the new fields to the object
                      */
                     const token: string = JWT.sign(Object.assign({}, doc))
-                    WebUtil.successResponse(res, WebUtil.stripPII(doc), 200, { bearer: token });
+                    WebUtil.successResponse(res, WebUtil.stripPII(updateRes), 200, { bearer: token });
                 }
             } else {
                 WebUtil.errorResponse(res, updateErr, Constants.CLIENT_ERROR_A_NA, 404);
