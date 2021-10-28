@@ -2,8 +2,9 @@ import * as Constants from '../utils/constants';
 import WebUtil from '../utils/webUtil'
 import JWT from '../utils/jwtUtil';
 import UserDB, { User } from '../model/user';
-import { Request, Response } from 'express';
+import { request, Request, Response } from 'express';
 import { dotify } from '../model/user';
+import { UserInfo } from 'os';
 
 class Update {
 
@@ -38,14 +39,21 @@ class Update {
                     /**
                      * add the new fields to the object
                      */
-                    const token: string = JWT.sign(Object.assign({}, doc))
-                    WebUtil.successResponse(res, WebUtil.stripPII(updateRes), 200, { bearer: token });
+                    let newdoc = this.updateObject(doc, data);
+                    const token: string = JWT.sign(Object.assign({}, newdoc))
+                    WebUtil.successResponse(res, WebUtil.stripPII(newdoc), 200, { bearer: token });
                 }
             } else {
                 WebUtil.errorResponse(res, updateErr, Constants.CLIENT_ERROR_A_NA, 404);
             }
         });
     }
+
+    public updateObject(target: User, src: User): User {
+        Object.keys(target)
+              .forEach(k => target[k] = (src[k] ?? target[k]));
+        return target;
+      }
 
     public verify = (req: Request, res: Response): void => {
         try {
