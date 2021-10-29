@@ -51,7 +51,7 @@ class Update {
 
     public updateObject(target: User, src: User): User {
         Object.keys(target)
-              .forEach(k => target[k] = (src[k] ?? target[k]));
+              .forEach(k => target[k] = (target[k] ?? src[k]));
         return target;
       }
 
