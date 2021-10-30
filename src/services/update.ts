@@ -39,9 +39,8 @@ class Update {
                     /**
                      * add the new fields to the object
                      */
-                    let newdoc = this.updateObject(doc, data);
-                    const token: string = JWT.sign(Object.assign({}, newdoc))
-                    WebUtil.successResponse(res, WebUtil.stripPII(newdoc), 200, { bearer: token });
+                    this.read(doc, res);
+                    return;
                 }
             } else {
                 WebUtil.errorResponse(res, updateErr, Constants.CLIENT_ERROR_A_NA, 404);
@@ -49,11 +48,24 @@ class Update {
         });
     }
 
-    public updateObject(target: User, src: User): User {
-        Object.keys(target)
-              .forEach(k => target[k] = (target[k] ?? src[k]));
-        return target;
-      }
+    private read(data: User, res: Response): void {
+        const email: string = data.email;
+        UserDB.findOne({ email }, (findErr: any, findResult: User) => {
+            if (findErr) {
+                WebUtil.errorResponse(res, findErr, Constants.SERVER_ERROR, 500);
+                return;
+            } else if (findResult) {
+                const token: string = JWT.sign(Object.assign({}, findResult))
+                WebUtil.successResponse(res, WebUtil.stripPII(findResult), 200, { bearer: token });
+            } else {
+                WebUtil.errorResponse(res, null, Constants.CLIENT_ERROR_A_NA, 204);
+                return;
+            }
+        }).catch((err: any) => {
+            WebUtil.errorResponse(res, err, Constants.SERVER_ERROR, 500);
+            return;
+        });
+    }
 
     public verify = (req: Request, res: Response): void => {
         try {
