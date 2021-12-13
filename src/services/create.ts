@@ -53,7 +53,8 @@ class Create {
                         UserDB.create(newUser).then((createResult: User): void => {
                             const responseBody = {
                                 message: Constants.ACCOUNT_CREATION_MESSAGE,
-                                freeSpots: freeSpots
+                                freeSpots: freeSpots,
+                                user: WebUtil.stripPII(createResult)
                             };
                             const token: string = JWT.sign(Object.assign({}, createResult));
                             WebUtil.successResponse(res, responseBody, 200, { bearer: token });
